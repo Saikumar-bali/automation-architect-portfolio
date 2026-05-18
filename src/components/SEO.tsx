@@ -5,13 +5,15 @@ interface SEOProps {
   description?: string;
   image?: string;
   url?: string;
+  schema?: object;
 }
 
 const SEO = ({ 
   title = 'Saikumar Bali | Automation Architect & Systems Engineer', 
   description = 'Portfolio of Saikumar Bali - Automation Architect and Systems Engineer specializing in Quantitative Finance, AI integration, and Scalable Infrastructure.',
   image = 'https://saikumar-bali.vercel.app/og-image.png',
-  url = 'https://saikumar-bali.vercel.app'
+  url = 'https://saikumar-bali.vercel.app',
+  schema
 }: SEOProps) => {
   useEffect(() => {
     document.title = title.includes('Saikumar Bali') ? title : `${title} | Saikumar Bali`;
@@ -49,7 +51,18 @@ const SEO = ({
     updateMeta('twitter:title', title);
     updateMeta('twitter:description', description);
     updateMeta('twitter:image', image);
-  }, [title, description, image, url]);
+
+    // Handle JSON-LD Schema
+    if (schema) {
+      let script = document.querySelector('script[type="application/ld+json"]') as HTMLScriptElement;
+      if (!script) {
+        script = document.createElement('script');
+        script.type = 'application/ld+json';
+        document.head.appendChild(script);
+      }
+      script.text = JSON.stringify(schema);
+    }
+  }, [title, description, image, url, schema]);
 
   return null;
 };

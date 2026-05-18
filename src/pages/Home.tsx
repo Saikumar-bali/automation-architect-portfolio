@@ -18,9 +18,9 @@ interface Project {
 }
 
 const pageVariants = {
-  initial: { opacity: 0, filter: 'blur(10px)' },
-  animate: { opacity: 1, filter: 'blur(0px)', transition: { duration: 0.6, ease: 'easeOut' as const } },
-  exit: { opacity: 0, filter: 'blur(10px)', transition: { duration: 0.4, ease: 'easeIn' as const } },
+  initial: { opacity: 0, y: 10 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' as const } },
+  exit: { opacity: 0, y: -10, transition: { duration: 0.3, ease: 'easeIn' as const } },
 };
 
 const TypingEffect = ({ text, delay = 0 }: { text: string; delay?: number }) => {
@@ -103,7 +103,7 @@ const AboutSection = () => (
           {[
             { label: 'Frontend / Mobile', tags: ['React', 'React Native CLI', 'Android Native', 'Next.js', 'TypeScript', 'Tailwind', 'Framer Motion', 'Three.js', 'Svelte'], color: '#10b981' },
             { label: 'Backend / Infra', tags: ['Node.js', 'NestJS', 'Express', 'Prisma', 'PostgreSQL', 'Supabase', 'Socket.io', 'Redis', 'Firebase'], color: '#2563eb' },
-            { label: 'Automation & AI', tags: ['Python', 'Playwright', 'Selenium', 'Groq AI', 'Gemini Flash', 'Llama 3', 'Stealth Mode', 'Web Scraping'], color: '#f59e0b' },
+            { label: 'Automation & AI', tags: ['Python', 'Playwright', 'Selenium', 'Groq AI', 'Gemini-3-flash-preview', 'Llama 3', 'Stealth Mode', 'Web Scraping'], color: '#f59e0b' },
             { label: 'Tools & Platforms', tags: ['AWS', 'Vercel', 'Netlify', 'Cloudflare', 'Render', 'Railway', 'Docker', 'cloudflared', 'GitHub Actions', 'Grafana', 'Pusher', 'Cloudinary'], color: '#8b5cf6' },
           ].map((group) => (
             <div key={group.label}>
@@ -244,9 +244,59 @@ export default function Home() {
     });
   }, [projects, searchTerm, selectedFilter]);
 
+  const homeSchema = useMemo(() => ({
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "mainEntity": {
+      "@type": "Person",
+      "name": "Saikumar Bali",
+      "jobTitle": "Automation Architect & Systems Engineer",
+      "description": "Expert in Quantitative Finance, AI integration, and Scalable Infrastructure.",
+      "url": "https://saikumar-bali.vercel.app",
+      "knowsAbout": ["Quantitative Trading", "AI Automation", "Systems Engineering", "Full Stack Development"],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Project Portfolio",
+        "itemListElement": projects.map((p, i) => ({
+          "@type": "ListItem",
+          "position": i + 1,
+          "item": {
+            "@type": "CreativeWork",
+            "name": p.title,
+            "description": p.description,
+            "url": `https://saikumar-bali.vercel.app/project/${p.slug}`
+          }
+        }))
+      }
+    }
+  }), [projects]);
+
   return (
     <>
-      <SEO />
+      <SEO schema={homeSchema} />
+      {/* ── Hidden Site Index for AI/Crawlers ─────────────────── */}
+      <div className="sr-only" aria-hidden="true">
+        <h1>Saikumar Bali | Automation Architect Portfolio</h1>
+        <p>Expert in Quantitative Trading Systems, AI Automation Bots, and Scalable Systems Engineering.</p>
+        <h2>Technical Stack</h2>
+        <ul>
+          <li>Frontend: React, Next.js, React Native, TypeScript, Tailwind, Framer Motion</li>
+          <li>Backend: Node.js, NestJS, Express, PostgreSQL, Supabase, Redis</li>
+          <li>Automation: Python, Playwright, Selenium, Gemini AI, Stealth Mode Automation</li>
+          <li>Infrastructure: AWS EC2, Docker, GitHub Actions, CloudWatch, Render</li>
+        </ul>
+        <h2>Projects</h2>
+        <ul>
+          {projects.map(p => (
+            <li key={p.id}>
+              <a href={`/project/${p.slug}`}>{p.title}</a>
+              <p>{p.description}</p>
+              <p>Tech: {p.techStack.join(', ')}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+
       <AnimatePresence mode="wait">
         <motion.div
           key="main-content"
@@ -306,6 +356,13 @@ export default function Home() {
                   <span className="text-emerald-500 font-mono text-sm opacity-50 group-hover:opacity-100 transition-opacity">0x02</span>
                   <span className="text-slate-300 font-mono text-sm uppercase tracking-wider">WhatsApp Direct</span>
                 </motion.a>
+                <Link
+                  to="/mission-control"
+                  className="px-6 py-2 rounded border border-slate-700/50 bg-emerald-600/10 hover:bg-emerald-600/20 hover:border-emerald-500/50 transition-all flex items-center gap-2 group"
+                >
+                  <span className="text-emerald-500 font-mono text-sm opacity-50 group-hover:opacity-100 transition-opacity">0x03</span>
+                  <span className="text-slate-300 font-mono text-sm uppercase tracking-wider">Mission Control</span>
+                </Link>
               </div>
 
               {/* Stats row */}

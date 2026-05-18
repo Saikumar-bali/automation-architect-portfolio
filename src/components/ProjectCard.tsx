@@ -18,6 +18,7 @@ const ProjectCard = ({ title, description, techStack, liveUrl, index, featured }
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.07 }}
       whileHover={{ y: -5 }}
+      style={{ willChange: 'transform, opacity' }}
       className="relative group h-full"
     >
       {/* Glow effect */}
@@ -26,14 +27,15 @@ const ProjectCard = ({ title, description, techStack, liveUrl, index, featured }
         style={{
           background: 'linear-gradient(135deg, #10b981 0%, #2563eb 100%)',
           boxShadow: '0 0 40px rgba(16,185,129,0.3)',
+          willChange: 'opacity',
         }}
       />
 
       <div
         className="relative p-6 rounded-2xl h-full flex flex-col transition-all duration-300 group-hover:border-[#10b981]"
         style={{
-          background: 'rgba(2,6,23,0.8)',
-          backdropFilter: 'blur(20px)',
+          background: 'rgba(2,6,23,0.7)',
+          backdropFilter: 'blur(10px)',
           border: featured ? '1px solid rgba(16,185,129,0.35)' : '1px solid rgba(16,185,129,0.15)',
           boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.05)',
         }}

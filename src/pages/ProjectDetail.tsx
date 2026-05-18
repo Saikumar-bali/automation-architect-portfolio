@@ -121,12 +121,52 @@ export default function ProjectDetail() {
   const deepDive = project.deepDive as DeepDive | null;
   const metrics = (project.metrics ?? []) as Metric[];
 
+  const projectSchema = project ? {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "name": project.title,
+    "description": project.description,
+    "url": `https://saikumar-bali.vercel.app/project/${project.slug}`,
+    "creator": {
+      "@type": "Person",
+      "name": "Saikumar Bali"
+    },
+    "keywords": project.techStack.join(', ')
+  } : undefined;
+
   return (
     <>
       <SEO
         title={project.title}
         description={project.description}
+        schema={projectSchema}
       />
+      {/* ── Hidden Build Report for AI/Crawlers ────────────────── */}
+      <div className="sr-only" aria-hidden="true">
+        <article>
+          <h1>Project: {project.title}</h1>
+          <p>{project.description}</p>
+          <p>Technologies used: {project.techStack.join(', ')}</p>
+          {deepDive && (
+            <>
+              <h2>Build Report</h2>
+              <section>
+                <h3>Objective</h3>
+                <p>{deepDive.why}</p>
+              </section>
+              <section>
+                <h3>Architecture</h3>
+                <p>{deepDive.architecture}</p>
+              </section>
+              <section>
+                <h3>Automation</h3>
+                <p>{deepDive.automation}</p>
+              </section>
+            </>
+          )}
+        </article>
+      </div>
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

@@ -5,6 +5,7 @@ import { Analytics } from '@vercel/analytics/react';
 import Home from '@/pages/Home';
 import ProjectDetail from '@/pages/ProjectDetail';
 import AnalyticsPage from '@/pages/Analytics';
+import JobAssistant from '@/pages/JobAssistant';
 import { SearchProvider } from '@/context/SearchContext';
 import CommandPalette from '@/components/CommandPalette';
 
@@ -27,21 +28,22 @@ const DataStreamColumn = ({ delay, speed }: { delay: number; speed: number }) =>
   
   return (
     <motion.div
-      className="absolute top-0 bottom-0 w-8 flex flex-col items-center justify-start overflow-hidden"
-      style={{ left: `${delay * 6}%` }}
+      className="absolute top-0 bottom-0 w-8 flex flex-col items-center justify-start overflow-hidden pointer-events-none"
+      style={{ left: `${delay * 6}%`, willChange: 'opacity' }}
       initial={{ opacity: 0 }}
-      animate={{ opacity: 0.15 }}
+      animate={{ opacity: 0.1 }}
       transition={{ duration: 2, delay: delay * 0.3 }}
     >
       <motion.div
         className="flex flex-col"
-        animate={{ y: ['0%', '-100%'] }}
+        animate={{ y: ['0%', '-50%'] }}
         transition={{ 
           duration: speed, 
           repeat: Infinity, 
           ease: 'linear',
           delay: delay * 0.5
         }}
+        style={{ willChange: 'transform' }}
       >
         {[...data, ...data].map((item, i) => (
           <span
@@ -49,7 +51,7 @@ const DataStreamColumn = ({ delay, speed }: { delay: number; speed: number }) =>
             className="text-[10px] font-mono leading-tight"
             style={{ 
               color: item.length > 2 ? '#10b981' : '#2563eb',
-              textShadow: '0 0 2px currentColor'
+              opacity: item.length > 2 ? 0.8 : 0.4
             }}
           >
             {item}
@@ -121,6 +123,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/project/:slug" element={<ProjectDetail />} />
             <Route path="/analytics" element={<AnalyticsPage />} />
+            <Route path="/mission-control" element={<JobAssistant />} />
           </Routes>
           <Analytics />
         </div>
