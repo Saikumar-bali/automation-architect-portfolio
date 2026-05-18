@@ -1,0 +1,81 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id            String   @id
+  slug          String   @unique
+  title         String
+  description   String
+  techStack     String[]
+  liveUrl       String?
+  githubUrl        String?
+  githubProfileUrl String?
+  whatsappUrl      String?
+  screenshotUrl String?
+  screenshots   String[]
+  deepDive      Json?
+  metrics       Json?
+  viewCount     Int      @default(0)
+  featured      Boolean  @default(false)
+}
+
+model ProjectView {
+  id          String   @id @default(cuid())
+  projectId   String
+  slug        String
+  viewedAt    DateTime @default(now())
+  viewerIp    String?
+  userAgent   String?
+  referrer    String?
+  sessionId   String?
+  deviceType  String?
+  browser     String?
+  country     String?
+  isUnique    Boolean  @default(false)
+}
+
+model DailyViewStats {
+  id          String   @id @default(cuid())
+  projectId   String
+  date        DateTime @db.Date
+  slug        String
+  totalViews  Int      @default(0)
+  uniqueViews Int      @default(0)
+  country     String?
+  deviceType  String?
+
+  @@unique([projectId, date])
+}
+
+model ViewSession {
+  id           String   @id @default(cuid())
+  sessionId    String   @unique
+  startTime    DateTime @default(now())
+  endTime      DateTime?
+  pageViews    Int      @default(0)
+  country      String?
+  deviceType   String?
+  browser      String?
+}
+
+model Metric {
+  id    String @id
+  label String
+  value String
+  type  String
+}
+
+model Lead {
+  id        String   @id
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+}

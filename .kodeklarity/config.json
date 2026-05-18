@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "stack": {
+    "detected": [
+      "react",
+      "generic"
+    ],
+    "enabled": [
+      "react",
+      "generic"
+    ],
+    "disabled": []
+  },
+  "workspaces": {},
+  "customBoundaries": [],
+  "exclude": [
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/*.test.tsx",
+    "**/*.spec.tsx",
+    "tests/**",
+    "scripts/**",
+    "__tests__/**"
+  ],
+  "edgeRules": [],
+  "importAliases": {},
+  "trace": {
+    "maxDepth": 4,
+    "excludeTypeOnlyImports": true
+  },
+  "_meta": {
+    "generatedAt": "2026-05-18T05:35:35.502Z",
+    "lastModifiedBy": "kk_init",
+    "projectName": "portfolio_website"
+  }
+}
